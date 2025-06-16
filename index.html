@@ -1,119 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Trending Memes from Reddit</title>
-  <style>
-    body {
-      background-color: #1a1a1a;
-      color: #eee;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #272727;
-      padding: 1rem;
-      text-align: center;
-      font-size: 2rem;
-      font-weight: bold;
-      color: #00ffcc;
-    }
-    #memes {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1rem;
-      padding: 1rem;
-    }
-    .meme {
-      background-color: #333;
-      border-radius: 10px;
-      padding: 1rem;
-      box-shadow: 0 0 10px #000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .meme img {
-      max-width: 100%;
-      border-radius: 10px;
-      margin-bottom: 0.5rem;
-    }
-    .caption {
-      font-weight: bold;
-      text-align: center;
-    }
-    #loadMoreBtn {
-      display: block;
-      margin: 1rem auto 2rem;
-      background: #00ffcc;
-      border: none;
-      padding: 1rem 2rem;
-      font-size: 1rem;
-      border-radius: 10px;
-      cursor: pointer;
-      color: #000;
-      font-weight: bold;
-      transition: background 0.3s ease;
-    }
-    #loadMoreBtn:hover {
-      background: #00cc99;
-    }
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background-color: #272727;
-      color: #aaa;
-      font-size: 0.9rem;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Funny Trending Memes</title>
+<style>
+  body {
+    background-color: #222;
+    color: #eee;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    max-width: 900px;
+    margin: auto;
+  }
+  h1 {
+    text-align: center;
+    color: #0f9;
+  }
+  .meme {
+    margin-bottom: 30px;
+  }
+  .meme img {
+    max-width: 100%;
+    border-radius: 10px;
+  }
+  .caption {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 8px;
+    font-size: 1.1em;
+  }
+</style>
 </head>
 <body>
-  <header>Trending Memes from Reddit</header>
-  <div id="memes"></div>
-  <button id="loadMoreBtn">Load More Memes</button>
-  <footer>Built by BigMemeMan © 2025</footer>
+  <h1>🔥 Trending Memes Right Now 🔥</h1>
 
-  <script>
-    const memesContainer = document.getElementById('memes');
-    const loadMoreBtn = document.getElementById('loadMoreBtn');
-    let after = null;
+  <div class="meme">
+    <img src="https://i.redd.it/3o1uzwrrk3x71.jpg" alt="Meme 1" />
+    <div class="caption">When you finally understand the code</div>
+  </div>
 
-    async function fetchMemes() {
-      loadMoreBtn.disabled = true;
-      loadMoreBtn.textContent = 'Loading...';
-      let url = 'https://www.reddit.com/r/memes/top.json?limit=20&t=day';
-      if (after) {
-        url += '&after=' + after;
-      }
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-        after = data.data.after;
-        data.data.children.forEach(post => {
-          const meme = post.data;
-          if (meme.post_hint === 'image' && meme.url) {
-            const memeDiv = document.createElement('div');
-            memeDiv.className = 'meme';
-            memeDiv.innerHTML = `
-              <img src="${meme.url}" alt="${meme.title}" loading="lazy" />
-              <div class="caption">${meme.title}</div>
-            `;
-            memesContainer.appendChild(memeDiv);
-          }
-        });
-      } catch (error) {
-        alert('Failed to load memes. Try refreshing the page.');
-      }
-      loadMoreBtn.disabled = false;
-      loadMoreBtn.textContent = 'Load More Memes';
-    }
+  <div class="meme">
+    <img src="https://i.redd.it/5cv72x81u6x71.jpg" alt="Meme 2" />
+    <div class="caption">That feeling when the internet goes down</div>
+  </div>
 
-    loadMoreBtn.addEventListener('click', fetchMemes);
+  <div class="meme">
+    <img src="https://i.redd.it/t7k96aepzjx71.jpg" alt="Meme 3" />
+    <div class="caption">Me trying to explain my homework to my dog</div>
+  </div>
 
-    // Load first batch on page load
-    fetchMemes();
-  </script>
-</body>
-</html>
+  <div class="meme">
+    <img src="https://i.redd.it/k34nxq6v3hx71.jpg" alt="Meme 4" />
+    <div class="caption">When your playlist hits just right</div>
+  </div>
+
+  <div class="meme">
+    <img src="https://i.redd.it/c4jz7l15zjx71.jpg" alt="Meme 5" />
+    <div class="caption">Monday mornings got me like...</div>
+  </div>
+
+  <div class="meme">
+    <img src="https://i.redd.it/gg7chdxtzjx71.jpg" alt="Meme 6" />
+    <div class="caption">That awkward moment when...</div>
+  </div>
+
+  <div class="meme">
+    <img src="https://i.redd.it/jq9g8swpzjx71.jpg" alt="Meme 7" />
+    <div class="caption">Trying to adult be like</div>
+  </div>
+
+  <div class="meme">
+    <img src="https://i.redd.it/y5h14o2ozjx71.jpg" alt="Meme 8" />
+    <div class="caption">When the game glitches at the best moment</div>
+  </div>
+
+  <div class="meme">
+    <img s
+
