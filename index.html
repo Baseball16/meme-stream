@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MemeStream - Trending Memes</title>
+  <title>Trending Memes from Reddit</title>
   <style>
     body {
       background-color: #1a1a1a;
-      color: #fff;
-      font-family: 'Arial', sans-serif;
+      color: #eee;
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
     }
@@ -20,7 +20,7 @@
       font-weight: bold;
       color: #00ffcc;
     }
-    .meme-container {
+    #memes {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 1rem;
@@ -30,16 +30,35 @@
       background-color: #333;
       border-radius: 10px;
       padding: 1rem;
-      text-align: center;
       box-shadow: 0 0 10px #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .meme img {
-      width: 100%;
+      max-width: 100%;
       border-radius: 10px;
+      margin-bottom: 0.5rem;
     }
     .caption {
-      margin-top: 0.5rem;
       font-weight: bold;
+      text-align: center;
+    }
+    #loadMoreBtn {
+      display: block;
+      margin: 1rem auto 2rem;
+      background: #00ffcc;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #000;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+    #loadMoreBtn:hover {
+      background: #00cc99;
     }
     footer {
       text-align: center;
@@ -51,54 +70,50 @@
   </style>
 </head>
 <body>
-  <header>
-    MemeStream - Trending Memes
-  </header>
-  <div class="meme-container">
-    <div class="meme">
-      <img src="https://i.imgur.com/ZXQYF3I.jpg" alt="Airball meme" />
-      <div class="caption">Airball! 🏀</div>
-    </div>
-    <div class="meme">
-      <img src="https://i.imgur.com/xQX4yJ3.jpg" alt="SYBAU meme" />
-      <div class="caption">SYBAU 😤</div>
-    </div>
-    <div class="meme">
-      <img src="https://i.imgur.com/5Oxa0sG.jpg" alt="Skibidi Toilet meme" />
-      <div class="caption">Skibidi Toilet 🚽</div>
-    </div>
-    <div class="meme">
-      <img src="https://i.imgur.com/ckG5EXn.jpg" alt="NPC meme" />
-      <div class="caption">NPC Meme 🤖</div>
-    </div>
-    <div class="meme">
-      <img src="https://i.imgur.com/fyXXZlt.jpg" alt="Distracted Boyfriend meme" />
-      <div class="caption">Distracted Boyfriend 😵‍💫</div>
-    </div>
-    <div class="meme">
-      <img src="https://i.imgur.com/t7YUlL3.jpg" alt="Coffin Dance meme" />
-      <div class="caption">Coffin Dance ⚰️🎉</div>
-    </div>
-    <div class="meme">
-      <img src="https://i.imgur.com/J3QYmzN.jpg" alt="Drake Hotline Bling meme" />
-      <div class="caption">Drake Hotline Bling 👌</div>
-    </div>
-    <div class="meme">
-      <img src="https://i.imgur.com/2kNjgXQ.png" alt="This is fine meme" />
-      <div class="caption">This Is Fine 🔥🐶</div>
-    </div>
-    <div class="meme">
-      <img src="https://i.imgur.com/pW5RreB.jpg" alt="Harambe meme" />
-      <div class="caption">Harambe 🦍</div>
-    </div>
-    <div class="meme">
-      <img src="https://i.imgur.com/JTrGwwp.jpg" alt="Surprised Pikachu meme" />
-      <div class="caption">Surprised Pikachu ⚡️</div>
-    </div>
-  </div>
-  <footer>
-    Built by BigMemeMan © 2025
-  </footer>
+  <header>Trending Memes from Reddit</header>
+  <div id="memes"></div>
+  <button id="loadMoreBtn">Load More Memes</button>
+  <footer>Built by BigMemeMan © 2025</footer>
+
+  <script>
+    const memesContainer = document.getElementById('memes');
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    let after = null;
+
+    async function fetchMemes() {
+      loadMoreBtn.disabled = true;
+      loadMoreBtn.textContent = 'Loading...';
+      let url = 'https://www.reddit.com/r/memes/top.json?limit=20&t=day';
+      if (after) {
+        url += '&after=' + after;
+      }
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+        after = data.data.after;
+        data.data.children.forEach(post => {
+          const meme = post.data;
+          if (meme.post_hint === 'image' && meme.url) {
+            const memeDiv = document.createElement('div');
+            memeDiv.className = 'meme';
+            memeDiv.innerHTML = `
+              <img src="${meme.url}" alt="${meme.title}" loading="lazy" />
+              <div class="caption">${meme.title}</div>
+            `;
+            memesContainer.appendChild(memeDiv);
+          }
+        });
+      } catch (error) {
+        alert('Failed to load memes. Try refreshing the page.');
+      }
+      loadMoreBtn.disabled = false;
+      loadMoreBtn.textContent = 'Load More Memes';
+    }
+
+    loadMoreBtn.addEventListener('click', fetchMemes);
+
+    // Load first batch on page load
+    fetchMemes();
+  </script>
 </body>
 </html>
-Add trending memes with working images
